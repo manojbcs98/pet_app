@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/pet_widget.dart';
+import 'package:test_app/ui/pet_widget.dart';
 
-import 'data.dart';
+import '../repo_layer/data.dart';
 
 class CategoryList extends StatelessWidget {
   final Category category;
@@ -39,15 +39,6 @@ class CategoryList extends StatelessWidget {
             color: Colors.grey[800],
           ),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.more_horiz,
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

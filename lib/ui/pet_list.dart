@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/main_list_bloc/list_states.dart';
-import 'package:test_app/pet_adopt_history.dart';
-import 'package:test_app/pet_widget.dart';
+import 'package:test_app/ui/pet_adopt_history.dart';
+import 'package:test_app/ui/pet_widget.dart';
 
+import '../main_list_bloc/list_bloc.dart';
+import '../repo_layer/data.dart';
 import 'category_list.dart';
-import 'data.dart';
 import 'drawer.dart';
-import 'main_list_bloc/list_bloc.dart';
 
-class Principal extends StatefulWidget {
+class PetList extends StatefulWidget {
   @override
-  _PrincipalState createState() => _PrincipalState();
+  _PetListState createState() => _PetListState();
 }
 
-class _PrincipalState extends State<Principal> {
+class _PetListState extends State<PetList> {
   List<Pet> pets = getPetListData();
   List<Pet> adoptedPets = PetAdopted.list;
 

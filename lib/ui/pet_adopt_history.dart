@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/adopted_pet_history_bloc/pet_history_states.dart';
-import 'package:test_app/pet_widget.dart';
+import 'package:test_app/ui/pet_widget.dart';
 
-import 'adopted_pet_history_bloc/pet_history_list_bloc.dart';
-import 'data.dart';
+import '../adopted_pet_history_bloc/pet_history_list_bloc.dart';
+import '../repo_layer/data.dart';
 
 class PetAdoptHistory extends StatefulWidget {
   final List<Pet> petList;

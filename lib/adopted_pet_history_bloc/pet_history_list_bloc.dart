@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/adopted_pet_history_bloc/pet_history_states.dart';
-import 'package:test_app/data.dart';
+import 'package:test_app/repo_layer/data.dart';
 
 class PetHistoryListCubit extends Cubit<PetHistoryListStates> {
   PetHistoryListCubit() : super(InitialPetHistoryListState()) {

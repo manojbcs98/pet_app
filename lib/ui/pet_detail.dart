@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test_app/pet_adopt_history.dart';
+import 'package:test_app/ui/pet_adopt_history.dart';
 
-import 'data.dart';
+import '../repo_layer/data.dart';
 
 class PetDetail extends StatefulWidget {
   final Pet pet;
@@ -120,36 +120,6 @@ class _PetDetailState extends State<PetDetail> {
                           SizedBox(
                             height: 8,
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.grey[600],
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                widget.pet.location,
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text(
-                                "(" + widget.pet.distance + "km)",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                       Container(
@@ -230,8 +200,6 @@ class _PetDetailState extends State<PetDetail> {
 
                         PetAdopted.list.add(Pet(
                             widget.pet.name,
-                            widget.pet.location,
-                            widget.pet.distance,
                             widget.pet.condition,
                             widget.pet.category,
                             widget.pet.imageUrl,

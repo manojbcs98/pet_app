@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:test_app/data.dart';
+import 'package:test_app/repo_layer/data.dart';
 
 abstract class PetListStates extends Equatable {}
 

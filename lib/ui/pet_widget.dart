@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/pet_detail.dart';
+import 'package:test_app/ui/pet_detail.dart';
 
-import 'data.dart';
+import '../repo_layer/data.dart';
 
 class PetWidget extends StatelessWidget {
   final Pet pet;
@@ -121,36 +121,6 @@ class PetWidget extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.grey[600],
-                        size: 18,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        pet.location,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        "(" + pet.distance + "km)",
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),

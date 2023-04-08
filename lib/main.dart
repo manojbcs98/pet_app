@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/principal.dart';
+import 'package:test_app/ui/pet_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: Principal(),
+      home: PetList(),
     );
   }
 }
