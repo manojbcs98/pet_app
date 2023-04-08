@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/main_list_bloc/list_states.dart';
 import 'package:test_app/pet_adopt_history.dart';
 import 'package:test_app/pet_widget.dart';
 
 import 'category_list.dart';
 import 'data.dart';
 import 'drawer.dart';
+import 'main_list_bloc/list_bloc.dart';
 
 class Principal extends StatefulWidget {
   @override
@@ -53,100 +56,119 @@ class _PrincipalState extends State<Principal> {
         ],
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              "Find Your",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              "Lovely pet in anywhere",
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 24,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: TextStyle(fontSize: 16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
-                contentPadding: EdgeInsets.only(
-                  right: 30,
-                ),
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(right: 16.0, left: 24.0),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.black,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Column(
+      body: BlocProvider<PetListCubit>(
+        create: (context) => PetListCubit(),
+        child:
+            BlocBuilder<PetListCubit, PetListStates>(builder: (context, state) {
+          Widget widget = Container();
+          if (state is InitialPetListState) {
+            widget = widget;
+          }
+          if (state is LoadingPetListState) {
+            widget = const CircularProgressIndicator();
+          }
+          if (state is LoadedPetListState) {
+            List<Pet> list = state.petList;
+            widget = Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildPetCategory(
-                        Category.BUNNY, "90", Colors.green.shade200),
-                    buildPetCategory(Category.CAT, "210", Colors.blue.shade200),
-                  ],
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    "Find Your",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildPetCategory(Category.DOG, "340", Colors.red.shade200),
-                    buildPetCategory(
-                        Category.HAMSTER, "56", Colors.orange.shade200),
-                  ],
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    "Lovely pet in anywhere",
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: const TextStyle(fontSize: 16),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      contentPadding: const EdgeInsets.only(
+                        right: 30,
+                      ),
+                      prefixIcon: const Padding(
+                        padding: EdgeInsets.only(right: 16.0, left: 24.0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildPetCategory(
+                              Category.BUNNY, "90", Colors.green.shade200),
+                          buildPetCategory(
+                              Category.CAT, "210", Colors.blue.shade200),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          buildPetCategory(
+                              Category.DOG, "340", Colors.red.shade200),
+                          buildPetCategory(
+                              Category.HAMSTER, "56", Colors.orange.shade200),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: GridView.count(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      childAspectRatio: 1 / 1.55,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 15,
+                      children: list.map((item) {
+                        return PetWidget(
+                          pet: item,
+                          index: -1,
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: GridView.count(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                childAspectRatio: 1 / 1.55,
-                crossAxisCount: 2,
-                crossAxisSpacing: 15,
-                children: getPetListData().map((item) {
-                  return PetWidget(
-                    pet: item,
-                    index: -1,
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-        ],
+            );
+          }
+          return widget;
+        }),
       ),
     );
   }
