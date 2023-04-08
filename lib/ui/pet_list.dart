@@ -18,6 +18,7 @@ class PetList extends StatefulWidget {
 class _PetListState extends State<PetList> {
   List<Pet> pets = getPetListData();
   List<Pet> adoptedPets = PetAdopted.list;
+  final TextEditingController _searchQuery = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class _PetListState extends State<PetList> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    "Find Your",
+                    "Search for",
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -85,7 +86,7 @@ class _PetListState extends State<PetList> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text(
-                    "Lovely pet in anywhere",
+                    "Lovely pet according to choice",
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 24,
@@ -95,6 +96,8 @@ class _PetListState extends State<PetList> {
                 Padding(
                   padding: EdgeInsets.all(16),
                   child: TextField(
+                    onChanged: searchPets,
+                    controller: _searchQuery,
                     decoration: InputDecoration(
                       hintText: 'Search',
                       hintStyle: const TextStyle(fontSize: 16),
@@ -128,42 +131,44 @@ class _PetListState extends State<PetList> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          buildPetCategory(
-                              Category.BUNNY, "90", Colors.green.shade200),
-                          buildPetCategory(
-                              Category.CAT, "210", Colors.blue.shade200),
+                          buildPetCategory(Category.DOG, Colors.red.shade200),
+                          buildPetCategory(Category.CAT, Colors.blue.shade200),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           buildPetCategory(
-                              Category.DOG, "340", Colors.red.shade200),
+                              Category.BUNNY, Colors.green.shade200),
                           buildPetCategory(
-                              Category.HAMSTER, "56", Colors.orange.shade200),
+                              Category.HAMSTER, Colors.orange.shade200),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      childAspectRatio: 1 / 1.55,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 15,
-                      children: list.map((item) {
-                        return PetWidget(
-                          pet: item,
-                          index: -1,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
+                pets.isNotEmpty
+                    ? Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    childAspectRatio: 6 / 10,
+                                    crossAxisSpacing: 4,
+                                    mainAxisSpacing: 10),
+                            itemCount: pets.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return PetWidget(pet: pets[index], index: index);
+                            },
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Column(
+                        children: [Text("No Pet Found! Adopt the Pet")],
+                      )),
               ],
             );
           }
@@ -173,7 +178,25 @@ class _PetListState extends State<PetList> {
     );
   }
 
-  Widget buildPetCategory(Category category, String total, Color color) {
+  void searchPets(String query) {
+    List<Pet> petList = getPetListData();
+    if (query == "") {
+      setState(() {
+        pets = petList;
+      });
+    } else {
+      final suggestions = pets.where((element) {
+        final petTitle = element.name.toLowerCase();
+        final input = query.toLowerCase();
+        return petTitle.contains(input);
+      }).toList();
+      setState(() {
+        pets = suggestions;
+      });
+    }
+  }
+
+  Widget buildPetCategory(Category category, Color color) {
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -245,13 +268,6 @@ class _PetListState extends State<PetList> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    "Total of " + total,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  ),
                 ],
               ),
             ],
@@ -259,15 +275,5 @@ class _PetListState extends State<PetList> {
         ),
       ),
     );
-  }
-
-  List<Widget> buildNewestPet() {
-    List<Widget> list = [];
-    for (var i = 0; i < pets.length; i++) {
-      if (pets[i].newest) {
-        list.add(PetWidget(pet: pets[i], index: i));
-      }
-    }
-    return list;
   }
 }

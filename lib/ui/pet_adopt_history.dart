@@ -22,6 +22,8 @@ class _PetAdoptHistoryState extends State<PetAdoptHistory> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          title:
+              Text("Adopted Pets List", style: TextStyle(color: Colors.black)),
           backgroundColor: Colors.transparent,
           leading: InkWell(
               child: Icon(Icons.arrow_back, color: Colors.black),
