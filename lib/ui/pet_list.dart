@@ -86,7 +86,7 @@ class _PetListState extends State<PetList> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text(
-                    "Lovely pet according to choice",
+                    "Lovely pet according to your choice",
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 24,
@@ -126,24 +126,11 @@ class _PetListState extends State<PetList> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          buildPetCategory(Category.DOG, Colors.red.shade200),
-                          buildPetCategory(Category.CAT, Colors.blue.shade200),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          buildPetCategory(
-                              Category.BUNNY, Colors.green.shade200),
-                          buildPetCategory(
-                              Category.HAMSTER, Colors.orange.shade200),
-                        ],
-                      ),
+                      buildPetCategory(Category.DOG, Colors.red.shade200),
+                      buildPetCategory(Category.CAT, Colors.blue.shade200),
                     ],
                   ),
                 ),

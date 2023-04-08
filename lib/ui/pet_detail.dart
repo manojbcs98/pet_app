@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test_app/ui/pet_adopt_history.dart';
 
 import '../repo_layer/data.dart';
@@ -146,9 +147,8 @@ class _PetDetailState extends State<PetDetail> {
                   padding: EdgeInsets.all(8),
                   child: Row(
                     children: [
-                      buildPetFeature("4 months", "Age"),
-                      buildPetFeature("Grey", "Color"),
-                      buildPetFeature("11 Kg", "Weight"),
+                      buildPetFeature(widget.pet.age, "Age"),
+                      buildPetFeature(widget.pet.price, "INR"),
                     ],
                   ),
                 ),
@@ -197,6 +197,7 @@ class _PetDetailState extends State<PetDetail> {
                     onTap: () {
                       if (!widget.pet.isAdopted) {
                         _centerController.play();
+                        showToast(widget.pet.name + " Adopted");
 
                         PetAdopted.list.add(Pet(
                             widget.pet.name,
@@ -204,8 +205,9 @@ class _PetDetailState extends State<PetDetail> {
                             widget.pet.category,
                             widget.pet.imageUrl,
                             widget.pet.favorite,
-                            widget.pet.newest,
-                            widget.pet.isAdopted = true));
+                            widget.pet.isAdopted = true,
+                            widget.pet.price,
+                            widget.pet.age));
                         Future.delayed(const Duration(seconds: 3))
                             .then((value) => Navigator.pop(context));
                       } else {}
@@ -296,9 +298,13 @@ class _PetDetailState extends State<PetDetail> {
       ),
     );
   }
-/*  List<Pet> getPetAdoptedList({Pet? pet}){
-    List<Pet> petList=[];
-    petList.add(pet!);
-    return petList;
-  }*/
+
+  void showToast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green.shade300,
+        textColor: Colors.white);
+  }
 }
