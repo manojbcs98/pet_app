@@ -8,9 +8,9 @@ class PetListCubit extends Cubit<PetListStates> {
     getPetList();
   }
 
-  void getPetList() async {
+  void getPetList() {
     emit(LoadingPetListState());
-    List<Pet> data = await getPetListData();
+    List<Pet> data = getPetListData();
 
     emit(LoadedPetListState(data));
   }
