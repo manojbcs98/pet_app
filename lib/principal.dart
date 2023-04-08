@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_app/pet_adopt_history.dart';
 import 'package:test_app/pet_widget.dart';
 
 import 'category_list.dart';
@@ -12,7 +13,8 @@ class Principal extends StatefulWidget {
 }
 
 class _PrincipalState extends State<Principal> {
-  List<Pet> pets = getPetList();
+  List<Pet> pets = getPetListData();
+  List<Pet> adoptedPets = PetAdopted.list;
 
   @override
   Widget build(BuildContext context) {
@@ -34,181 +36,117 @@ class _PrincipalState extends State<Principal> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.notifications_none,
-              color: Colors.grey[800],
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PetAdoptHistory(adoptedPets)),
+                );
+              },
+              child: Icon(
+                Icons.history,
+                color: Colors.grey[800],
+              ),
             ),
           ),
         ],
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "Find Your",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              "Lovely pet in anywhere",
+              style: TextStyle(
+                color: Colors.grey[800],
+                fontSize: 24,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                hintStyle: TextStyle(fontSize: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                filled: true,
+                fillColor: Colors.grey[100],
+                contentPadding: EdgeInsets.only(
+                  right: 30,
+                ),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.only(right: 16.0, left: 24.0),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildPetCategory(
+                        Category.BUNNY, "90", Colors.green.shade200),
+                    buildPetCategory(Category.CAT, "210", Colors.blue.shade200),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildPetCategory(Category.DOG, "340", Colors.red.shade200),
+                    buildPetCategory(
+                        Category.HAMSTER, "56", Colors.orange.shade200),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Find Your",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                "Lovely pet in anywhere",
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: TextStyle(fontSize: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[100],
-                  contentPadding: EdgeInsets.only(
-                    right: 30,
-                  ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(right: 16.0, left: 24.0),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Pet Category",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Icon(
-                    Icons.more_horiz,
-                    color: Colors.grey[800],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildPetCategory(
-                          Category.HAMSTER, "56", Colors.orange.shade200),
-                      buildPetCategory(
-                          Category.CAT, "210", Colors.blue.shade200),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildPetCategory(
-                          Category.BUNNY, "90", Colors.green.shade200),
-                      buildPetCategory(
-                          Category.DOG, "340", Colors.red.shade200),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Newest Pet",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Icon(
-                    Icons.more_horiz,
-                    color: Colors.grey[800],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 280,
-              child: ListView(
+              child: GridView.count(
+                shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                children: buildNewestPet(),
+                childAspectRatio: 1 / 1.55,
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                children: getPetListData().map((item) {
+                  return PetWidget(
+                    pet: item,
+                    index: -1,
+                  );
+                }).toList(),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 16, left: 16, bottom: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Vets Near You",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Icon(
-                    Icons.more_horiz,
-                    color: Colors.grey[800],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 130,
-              margin: EdgeInsets.only(bottom: 16),
-              child: PageView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  buildVet("assets/images/vets/vet_0.png",
-                      "Animal Emergency Hospital", "(369) 133-8956"),
-                  buildVet("assets/images/vets/vet_1.png",
-                      "Artemis Veterinary Center", "(706) 722-9159"),
-                  buildVet("assets/images/vets/vet_2.png",
-                      "Big Lake Vet Hospital", "(598) 4986-9532"),
-                  buildVet("assets/images/vets/vet_3.png",
-                      "Veterinary Medical Center", "(33) 8974-559-555"),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -309,95 +247,5 @@ class _PrincipalState extends State<Principal> {
       }
     }
     return list;
-  }
-
-  Widget buildVet(String imageUrl, String name, String phone) {
-    return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 4),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(25),
-        ),
-        border: Border.all(
-          width: 1,
-          color: Colors.grey.shade300,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 98,
-            width: 98,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imageUrl),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.phone,
-                    color: Colors.grey[800],
-                    size: 18,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    phone,
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green[100],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  "OPEN - 24/7",
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }
