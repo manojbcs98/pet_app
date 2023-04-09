@@ -197,7 +197,7 @@ class _PetDetailState extends State<PetDetail> {
                     onTap: () {
                       if (!widget.pet.isAdopted) {
                         _centerController.play();
-                        showToast(widget.pet.name + " Adopted");
+                        showToast("You've now Adopted " + widget.pet.name);
 
                         PetAdopted.list.add(Pet(
                             widget.pet.name,
@@ -238,7 +238,9 @@ class _PetDetailState extends State<PetDetail> {
                                 : Colors.blue[300],
                           ),
                           child: Text(
-                            widget.pet.isAdopted ? "Already Adopted" : "Adopt",
+                            widget.pet.isAdopted
+                                ? "Already Adopted"
+                                : "Adopt Me",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
