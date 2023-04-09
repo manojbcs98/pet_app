@@ -1,24 +1,34 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/ui/pet_list.dart';
+import 'package:flutter/widgets.dart';
 
-void main() {
-  runApp(MyApp());
+import 'pet_preface.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  runApp(Home(savedThemeMode: savedThemeMode));
 }
 
-class MyApp extends StatelessWidget {
-  var mainTheme = ThemeData.light();
-  var darkTheme = ThemeData.dark();
+class Home extends StatefulWidget {
+  final AdaptiveThemeMode? savedThemeMode;
+
+  const Home({this.savedThemeMode});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  bool isMaterial = true;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: PetList(),
-    );
+    return AnimatedSwitcher(
+        duration: const Duration(seconds: 1),
+        child: PetPreface(
+            savedThemeMode: widget.savedThemeMode,
+            onChanged: () => setState(() => isMaterial = false)));
   }
 }

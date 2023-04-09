@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:test_app/ui/pet_widget.dart';
 import '../main_list_bloc/list_bloc.dart';
 import '../repo_layer/data.dart';
 import 'category_list.dart';
-import 'drawer.dart';
 
 class PetList extends StatefulWidget {
   @override
@@ -22,145 +22,183 @@ class _PetListState extends State<PetList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AppDrawer()));
-          },
-          child: Icon(
-            Icons.sort,
-            color: Colors.grey[800],
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PetAdoptHistory(adoptedPets)),
-                );
-              },
-              child: Icon(
-                Icons.history,
-                color: Colors.grey[800],
+    return AnimatedTheme(
+      data: Theme.of(context),
+      duration: const Duration(milliseconds: 300),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  AdaptiveTheme.of(context).toggleThemeMode();
+                },
+                child: Container(
+                  height: 15,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 10.0, left: 11),
+                    child: Text(
+                      "Change Theme",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-      ),
-      body: BlocProvider<PetListCubit>(
-        create: (context) => PetListCubit(),
-        child:
-            BlocBuilder<PetListCubit, PetListStates>(builder: (context, state) {
-          Widget widget = Container();
-          if (state is InitialPetListState) {
-            widget = widget;
-          }
-          if (state is LoadingPetListState) {
-            widget = const CircularProgressIndicator();
-          }
-          if (state is LoadedPetListState) {
-            List<Pet> list = state.petList;
-            widget = Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "Search for",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PetAdoptHistory(adoptedPets)),
+                  );
+                },
+                child: Container(
+                  height: 15,
+                  width: 160,
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text(
-                    "Lovely pet according to your choice",
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: TextField(
-                    onChanged: searchPets,
-                    controller: _searchQuery,
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: const TextStyle(fontSize: 16),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      contentPadding: const EdgeInsets.only(
-                        right: 30,
-                      ),
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.only(right: 16.0, left: 24.0),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                          size: 24,
-                        ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 10.0, left: 11),
+                    child: Text(
+                      "See Adopted Pet List",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildPetCategory(Category.DOG, Colors.red.shade200),
-                      buildPetCategory(Category.CAT, Colors.blue.shade200),
-                    ],
+              ),
+            ),
+          ],
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        body: BlocProvider<PetListCubit>(
+          create: (context) => PetListCubit(),
+          child: BlocBuilder<PetListCubit, PetListStates>(
+              builder: (context, state) {
+            Widget widget = Container();
+            if (state is InitialPetListState) {
+              widget = widget;
+            }
+            if (state is LoadingPetListState) {
+              widget = const CircularProgressIndicator();
+            }
+            if (state is LoadedPetListState) {
+              List<Pet> list = state.petList;
+              widget = Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "Search for",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
                   ),
-                ),
-                pets.isNotEmpty
-                    ? Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    childAspectRatio: 6 / 10,
-                                    crossAxisSpacing: 4,
-                                    mainAxisSpacing: 10),
-                            itemCount: pets.length,
-                            itemBuilder: (BuildContext ctx, index) {
-                              return PetWidget(pet: pets[index], index: index);
-                            },
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      "Lovely pet according to your choice",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: TextField(
+                      onChanged: searchPets,
+                      controller: _searchQuery,
+                      decoration: InputDecoration(
+                        hintText: 'Search',
+                        hintStyle: const TextStyle(fontSize: 16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
                           ),
                         ),
-                      )
-                    : Center(
-                        child: Column(
-                        children: [Text("No Pet Found! Adopt the Pet")],
-                      )),
-              ],
-            );
-          }
-          return widget;
-        }),
+                        filled: true,
+                        contentPadding: const EdgeInsets.only(
+                          right: 30,
+                        ),
+                        prefixIcon: const Padding(
+                          padding: EdgeInsets.only(right: 16.0, left: 24.0),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        buildPetCategory(Category.DOG, Colors.red.shade200),
+                        buildPetCategory(Category.CAT, Colors.blue.shade200),
+                      ],
+                    ),
+                  ),
+                  pets.isNotEmpty
+                      ? Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 200,
+                                      childAspectRatio: 6 / 10,
+                                      crossAxisSpacing: 4,
+                                      mainAxisSpacing: 10),
+                              itemCount: pets.length,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return PetWidget(
+                                    pet: pets[index], index: index);
+                              },
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: Column(
+                          children: [Text("No Pet Found! Adopt the Pet")],
+                        )),
+                ],
+              );
+            }
+            return widget;
+          }),
+        ),
       ),
     );
   }
@@ -250,7 +288,6 @@ class _PetListState extends State<PetList> {
                                 ? "Bunnies"
                                 : "Dogs",
                     style: TextStyle(
-                      color: Colors.grey[800],
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

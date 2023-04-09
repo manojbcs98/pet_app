@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:test_app/ui/pet_widget.dart';
 
 import '../repo_layer/data.dart';
@@ -11,10 +12,7 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -26,9 +24,6 @@ class CategoryList extends StatelessWidget {
                           ? "Bunny"
                           : "Dog") +
               " Category",
-          style: TextStyle(
-            color: Colors.grey[800],
-          ),
         ),
         leading: GestureDetector(
           onTap: () {
@@ -36,18 +31,18 @@ class CategoryList extends StatelessWidget {
           },
           child: Icon(
             Icons.arrow_back,
-            color: Colors.grey[800],
           ),
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: GridView.count(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 childAspectRatio: 1 / 1.55,
                 crossAxisCount: 2,
                 crossAxisSpacing: 15,

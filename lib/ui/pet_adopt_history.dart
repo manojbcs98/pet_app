@@ -20,13 +20,14 @@ class _PetAdoptHistoryState extends State<PetAdoptHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          title:
-              Text("Adopted Pets List", style: TextStyle(color: Colors.black)),
-          backgroundColor: Colors.transparent,
+          title: const Text(
+            "Adopted Pets List",
+          ),
           leading: InkWell(
-              child: Icon(Icons.arrow_back, color: Colors.black),
+              child: const Icon(
+                Icons.arrow_back,
+              ),
               onTap: () {
                 Navigator.pop(context);
               }),

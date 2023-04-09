@@ -4,7 +4,6 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:test_app/ui/pet_adopt_history.dart';
 
 import '../repo_layer/data.dart';
 
@@ -39,7 +38,6 @@ class _PetDetailState extends State<PetDetail> {
     List<Pet> adoptedPets = PetAdopted.list;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -48,29 +46,10 @@ class _PetDetailState extends State<PetDetail> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
-            color: Colors.grey[800],
           ),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PetAdoptHistory(adoptedPets)),
-                );
-              },
-              child: Icon(
-                Icons.history,
-                color: Colors.grey[800],
-              ),
-            ),
-          ),
-        ],
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Column(
@@ -98,7 +77,6 @@ class _PetDetailState extends State<PetDetail> {
             ),
           ),
           Container(
-            color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -113,7 +91,6 @@ class _PetDetailState extends State<PetDetail> {
                           Text(
                             widget.pet.name,
                             style: TextStyle(
-                              color: Colors.grey[800],
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
                             ),
@@ -152,32 +129,8 @@ class _PetDetailState extends State<PetDetail> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "Pet Story",
-                    style: TextStyle(
-                      color: Colors.grey[800],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
                 SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "Maine Coon cats are known for their intelligence and playfulness, as well as their size. One of the largest breeds of domestic cats, they are lovingly referreds.",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
+                  height: 56,
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -280,7 +233,6 @@ class _PetDetailState extends State<PetDetail> {
             Text(
               value,
               style: TextStyle(
-                color: Colors.grey[800],
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -291,7 +243,6 @@ class _PetDetailState extends State<PetDetail> {
             Text(
               feature,
               style: TextStyle(
-                color: Colors.grey[600],
                 fontSize: 14,
               ),
             ),
